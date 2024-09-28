@@ -1,6 +1,6 @@
 import './App.css';
 import DataUploader from './components/DataUploader';  // Ensure the path to DataUploader is correct
-import React, { useState, useEffect } from 'react';  // Add this line
+import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import RouteComponent from './components/RouteComponent';  // Import the new route component
 
@@ -10,8 +10,8 @@ const containerStyle = {
   height: '100%'
 };
 
-// Set the center of the map
-const center = {
+// Set the center of the map as a fallback if user location is unavailable
+const defaultCenter = {
   lat: 31.7619, // Example latitude (El Paso)
   lng: -106.4850 // Example longitude (El Paso)
 };
@@ -56,8 +56,8 @@ function App() {
           <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <GoogleMap
               mapContainerStyle={containerStyle}
-              center={center}
-              zoom={9}
+              center={userLocation ? userLocation : defaultCenter}  // Center map on userLocation when available
+              zoom={userLocation ? 14 : 9}  // Zoom in closer when userLocation is available
             >
               {/* If userLocation is available, render a marker */}
               {userLocation && (
@@ -70,7 +70,7 @@ function App() {
               )}
 
               {/* Render Route Component */}
-              <RouteComponent userLocation={userLocation} mapCenter={center} />
+              <RouteComponent userLocation={userLocation} mapCenter={userLocation || defaultCenter} />
             </GoogleMap>
           </LoadScript>
         </div>
