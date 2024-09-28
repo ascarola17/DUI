@@ -24,26 +24,27 @@ header {
   box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+/* Main content container */
 .content {
   position: relative;
   flex: 1;
   display: flex;
-  flex-direction: row;
   width: 100%;
+  height: 90vh; /* Flexible height based on the viewport */
   overflow: hidden;
 }
 
-
-
+/* Map takes most of the screen */
 .map {
-  height: 90%; /* Map takes full height of content */
-  width: 100%;  /* Full width for the map */
+  flex: 1;
+  height: 100%; /* Adjust to fill the remaining space */
+  width: 100%;
 }
 
 /* Logo container */
 .logo-container {
-  top: 250px;
-  right: 10px;
+  top: 20px;
+  right: 20px;
   position: absolute;
   cursor: pointer;
   display: inline-block;
@@ -69,36 +70,54 @@ header {
   border: 2px solid white;
 }
 
+.blink {
+  animation: blink-animation 1s infinite; /* Blink every second */
+}
+
+@keyframes blink-animation {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Dropdown menu styling */
 .dropdown-menu {
   position: absolute;
   top: 50px;  /* Distance below the logo */
-  left: 0;
+  right: 20px;
   background-color: white;
   width: 300px; /* Fixed width for the report */
-  height: 70%;  /* Fixed height to control overflow */
-  overflow-y: scroll;  /* Add vertical scrolling if content exceeds height */
+  max-height: 70vh; /* Flexible height based on viewport */
+  overflow-y: scroll;  /* Enable scrolling */
   border: 1px solid #ccc;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   z-index: 1000;
   padding: 10px;
-  width: 150px;
   text-align: left;
 }
 
-
-button {
-  /* Reset button styles for consistency */
-  font-family: inherit;
-}
-
+/* For mobile screens */
 @media (max-width: 768px) {
   .content {
-    flex-direction: column;
+    flex-direction: column; /* Stack content vertically */
+    height: auto; /* Let height auto adjust */
   }
 
   .map {
-    height: 90%; /* Map takes full height of content */
-    width: 100%;  /* Full width for the map */
+    height: 50vh; /* Make the map take less space on small screens */
+    width: 100%;
+  }
+
+  .dropdown-menu {
+    width: 90vw; /* Make the report menu larger on small screens */
+    top: 60px;
+    right: 5px;
+    height: 50vh; /* Adjust height for smaller devices */
   }
 }
-

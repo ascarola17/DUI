@@ -1,5 +1,3 @@
-// src/components/ReportButton.js
-
 import React, { useState } from 'react';
 
 const ReportButton = ({ onReport, isRecording }) => {
@@ -33,7 +31,7 @@ const ReportButton = ({ onReport, isRecording }) => {
 const buttonStyle = {
   position: 'fixed',
   bottom: '85px',
-  right: '60px',
+  left: '60px',
   padding: '15px 25px',
   fontSize: '15px',
   color: '#fff',
@@ -41,7 +39,7 @@ const buttonStyle = {
   borderRadius: '50px',
   cursor: 'pointer',
   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
-  zIndex: 1000, // Ensures the button stays on top of other elements
+  zIndex: 1000,
   transition: 'background-color 0.3s ease',
 };
 

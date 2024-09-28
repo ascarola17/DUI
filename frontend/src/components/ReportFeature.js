@@ -100,6 +100,10 @@ const ReportFeature = () => {
           <p>Recording... Click the Report button again to stop.</p>
         </div>
       )}
+
+        
+
+
       {/* Display Reports */}
       <div style={reportsContainerStyle}>
         <h2>Recent Reports</h2>
@@ -151,6 +155,7 @@ const reportsContainerStyle = {
   boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)', // Match the shadow for visual effect
   borderRadius: '8px', // Rounded corners
   zIndex: 4, // Ensure it's on top of other elements like the map
+  overflowY: 'auto',
 };
 
 const reportsListStyle = {
