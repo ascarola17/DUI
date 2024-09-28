@@ -44,3 +44,59 @@ header {
   height: 100%; /* Map takes full height of content */
   width: 100%;  /* Full width for the map */
 }
+
+/* Logo container */
+.logo-container {
+  position: relative;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.logo {
+  width: 50px;  /* Adjust the logo size as needed */
+  height: auto;
+}
+
+/* Notification dot */
+.notification-dot {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 12px;
+  height: 12px;
+  background-color: red;
+  border-radius: 50%;
+  border: 2px solid white;
+}
+
+/* Dropdown menu styling */
+.dropdown-menu {
+  position: absolute;
+  top: 50px;  /* Distance below the logo */
+  left: 0;
+  background-color: white;
+  width: 300px; /* Fixed width for the report */
+  height: 70%;  /* Fixed height to control overflow */
+  overflow-y: scroll;  /* Add vertical scrolling if content exceeds height */
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 10px;
+  width: 150px;
+  text-align: left;
+}
+
+.dropdown-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-menu li {
+  padding: 8px;
+  cursor: pointer;
+}
+
+.dropdown-menu li:hover {
+  background-color: #f0f0f0;
+}
