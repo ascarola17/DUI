@@ -7,10 +7,12 @@ import ReportFeature from './components/ReportFeature';
 import HeatMap from './components/HeatMap';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import Logo from './Logo.webp'; // Make sure the path is correct
 
 // Define your map container style
 const containerStyle = {
   width: '100%',
+  height: '100%',
   height: '100%',
 };
 
@@ -25,8 +27,22 @@ const highRiskZones = [
   { lat: 31.7641, lng: -106.4900 },  // Example of a high-risk area
   { lat: 31.7622, lng: -106.4875 },  // Another example of a high-risk area
 ];
+  lat: 31.7619, // Example latitude (El Paso)
+  lng: -106.4850, // Example longitude (El Paso)
+};
 
 function App() {
+  // State for controlling dropdown and notification dot
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [hasIssues, setHasIssues] = useState(true);  // Example: Assume there's an issue
+
+  // Toggle dropdown menu visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+    setHasIssues(false);
+  };
+
+  const [userLocation, setUserLocation] = useState(null);
   const [userLocation, setUserLocation] = useState(null);  // State to store user's location
   const [directions, setDirections] = useState(null);  // State to store the directions result
 
@@ -64,6 +80,12 @@ function App() {
         <h1>DUI Risk</h1>  {/* App title */}
       </header>
 
+      {/* Logo with a notification dot (conditionally rendered based on hasIssues) */}
+      <div className="logo-container" onClick={toggleDropdown}>
+        <img src="logo.jpg" alt="Description of image" className="logo" />
+        {hasIssues && <span className="notification-dot"></span>} {/* Use the hasIssues state here */}
+      </div>
+
       <div className="content">
         {/* Report Section */}
         <div className="report">
@@ -80,6 +102,7 @@ function App() {
             highRiskZones={highRiskZones}  // Pass the high-risk zones to RouteComponent
           />
         </div>
+          <ReportFeature />  {/* Integrate ReportFeature component */}
 
         {/* Map Section */}
         <div className="map">
