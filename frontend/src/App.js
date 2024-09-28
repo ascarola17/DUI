@@ -25,6 +25,27 @@ function App() {
     setHasIssues(false);
   };
 
+  const [userLocation, setUserLocation] = useState(null);
+
+  // Function to get user's current location
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(position => {
+        setUserLocation({
+          lat: position.coords.latitude,
+          lng: position.coords.longitude
+        });
+      });
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  };
+
+  // Get user's location when component mounts
+  useEffect(() => {
+    getCurrentLocation();
+  }, []);
+
   return (
     <div className="app-container">
       <header>
@@ -47,12 +68,30 @@ function App() {
         {/* Map Section */}
         <div className="map">
           <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-            <GoogleMap mapContainerStyle={containerStyle} center={center} zoom={9}>
-              {/* Additional Map components (like markers) can go here */}
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={9}
+            >
+              {/* If userLocation is available, render a marker */}
+              {userLocation && (
+                <Marker
+                  position={userLocation}  // Show the marker at user's location
+                  icon={{
+                    url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'  // Optional: Blue dot icon
+                  }}
+                />
+              )}
+
+              {/* Render Route Component */}
+              <RouteComponent userLocation={userLocation} mapCenter={center} />
             </GoogleMap>
           </LoadScript>
         </div>
       </div>
+
+      {/* Simulated Data Uploader */}
+      {/*<DataUploader />*/}
     </div>
   );
 }
