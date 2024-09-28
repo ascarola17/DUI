@@ -1,4 +1,5 @@
 import './App.css';
+import DataUploader from './components/DataUploader';  // Ensure the path to DataUploader is correct
 import React from 'react';
 import { GoogleMap, LoadScript } from '@react-google-maps/api';
 
@@ -25,6 +26,9 @@ function App() {
           {/* Other child components like markers can be added here */}
         </GoogleMap>
       </LoadScript>
+
+      {/*Similauted Data Uploaded here */}
+      <DataUploader />
     </div>
   );
 }
