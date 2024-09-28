@@ -6,6 +6,7 @@ import RouteComponent from './components/RouteComponent';  // Import the new rou
 import ReportFeature from './components/ReportFeature';    // Import the ReportFeature component
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import Logo from './Logo.webp'; // Make sure the path is correct
 
 // Define your map container style
 const containerStyle = {
@@ -73,16 +74,13 @@ function App() {
 
       {/* Logo with a notification dot (conditionally rendered based on hasIssues) */}
       <div className="logo-container" onClick={toggleDropdown}>
-        <img src="your-logo-url.png" alt="Logo" className="logo" />
+        <img src="logo.jpg" alt="Description of image" className="logo" />
         {hasIssues && <span className="notification-dot"></span>} {/* Use the hasIssues state here */}
       </div>
 
       <div className="content">
         {/* Report Section */}
-        <div className="report">
-          <h2>Report</h2>
           <ReportFeature />  {/* Integrate ReportFeature component */}
-        </div>
 
         {/* Map Section */}
         <div className="map">

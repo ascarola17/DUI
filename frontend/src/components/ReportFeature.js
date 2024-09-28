@@ -141,17 +141,16 @@ const recordingStyle = {
 };
 
 const reportsContainerStyle = {
-  position: 'fixed',
-  top: '20px',
-  right: '20px',
-  width: '300px',
-  maxHeight: '80vh',
-  overflowY: 'auto',
-  backgroundColor: '#fff',
-  padding: '15px',
-  borderRadius: '8px',
-  boxShadow: '0 4px 6px rgba(0,0,0,0.1)',
-  zIndex: 999,
+  position: 'absolute',
+  top: '80px',
+  right: '60px', 
+  width: '300px', // Fixed width for the report
+  maxHeight: '70vh', // Adjust the max-height to 70% of the viewport height
+  backgroundColor: 'rgba(255, 255, 255, 0.95)', // Semi-transparent background to match .report
+  padding: '20px', // Padding for content inside the report
+  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)', // Match the shadow for visual effect
+  borderRadius: '8px', // Rounded corners
+  zIndex: 4, // Ensure it's on top of other elements like the map
 };
 
 const reportsListStyle = {

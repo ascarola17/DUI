@@ -3,6 +3,7 @@ body, html, #root {
   margin: 0;
   padding: 0;
   height: 100%;
+  background-color: hsl(0, 0%, 12%);
 }
 
 .app-container {
@@ -10,51 +11,50 @@ body, html, #root {
   flex-direction: column;
   align-items: center;
   height: 100vh;
+  color: black;
 }
 
 header {
-  background-color: #ffffff;
+  background-color: hsl(0, 0%, 12%);
   width: 100%;
   padding: 20px;
   text-align: center;
-  font-size: 24px;
-  color: rgb(0, 0, 0);
+  font-size: 28px;
+  color: #ffffff;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 .content {
-  position: relative; /* Needed for positioning the report over the map */
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: row;
   width: 100%;
-  height: 80vh; /* Let the map take up more space */
+  overflow: hidden;
 }
 
-.report {
-  position: absolute;
-  top: 100px;  /* Distance from the top of the map */
-  left: 10px; /* Distance from the left of the map */
-  width: 300px; /* Fixed width for the report */
-  height: 70%;  /* Fixed height to control overflow */
-  overflow-y: scroll;  /* Add vertical scrolling if content exceeds height */
-  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
-  padding: 20px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for effect */
-  z-index: 2; /* Ensure it's on top of the map */
-}
+
 
 .map {
-  height: 100%; /* Map takes full height of content */
+  height: 90%; /* Map takes full height of content */
   width: 100%;  /* Full width for the map */
 }
 
 /* Logo container */
 .logo-container {
-  position: relative;
+  top: 250px;
+  right: 10px;
+  position: absolute;
   cursor: pointer;
   display: inline-block;
+  z-index: 4;
 }
 
 .logo {
-  width: 50px;  /* Adjust the logo size as needed */
-  height: auto;
+  width: 40px;  /* Make the logo smaller */
+  height: 40px;  /* Keep it a square to ensure it's circular */
+  border-radius: 50%;  /* This makes the image circular */
+  object-fit: cover;  /* Ensures the image scales properly within the circle */
 }
 
 /* Notification dot */
@@ -69,7 +69,6 @@ header {
   border: 2px solid white;
 }
 
-/* Dropdown menu styling */
 .dropdown-menu {
   position: absolute;
   top: 50px;  /* Distance below the logo */
@@ -86,75 +85,6 @@ header {
   text-align: left;
 }
 
-.dropdown-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-}
-
-.dropdown-menu li {
-  padding: 8px;
-  cursor: pointer;
-}
-
-.dropdown-menu li:hover {
-  background-color: #f0f0f0;
-}
-
-/* src/App.css */
-
-/* Basic reset and page styles */
-body, html, #root {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-}
-
-.app-container {
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-  font-family: Arial, sans-serif;
-}
-
-header {
-  background-color: #ffffff;
-  width: 100%;
-  padding: 20px;
-  text-align: center;
-  font-size: 28px;
-  color: #333333;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
-}
-
-.content {
-  position: relative; /* Needed for positioning the report over the map */
-  flex: 1;
-  display: flex;
-  flex-direction: row;
-  width: 100%;
-  overflow: hidden;
-}
-
-.report {
-  position: absolute;
-  top: 20px;  /* Distance from the top of the map */
-  left: 20px; /* Distance from the left of the map */
-  width: 300px; /* Fixed width for the report */
-  max-height: 70%;  /* Max height to control overflow */
-  overflow-y: auto;  /* Add vertical scrolling if content exceeds height */
-  background-color: rgba(255, 255, 255, 0.95); /* Semi-transparent background */
-  padding: 20px;
-  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2); /* Optional shadow for effect */
-  border-radius: 8px;
-  z-index: 2; /* Ensure it's on top of the map */
-}
-
-.map {
-  flex: 1;
-  height: 100%; /* Map takes full height of content */
-  width: 100%;  /* Full width for the map */
-}
 
 button {
   /* Reset button styles for consistency */
@@ -166,14 +96,9 @@ button {
     flex-direction: column;
   }
 
-  .report {
-    position: static;
-    width: 90%;
-    max-height: none;
-    margin: 20px auto;
-  }
-
   .map {
-    height: 50vh;
+    height: 90%; /* Map takes full height of content */
+    width: 100%;  /* Full width for the map */
   }
 }
+
