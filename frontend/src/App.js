@@ -20,6 +20,12 @@ const defaultCenter = {
   lng: -106.4850, // El Paso longitude
 };
 
+// Example high-risk zones (replace with actual data)
+const highRiskZones = [
+  { lat: 31.7641, lng: -106.4900 },  // Example of a high-risk area
+  { lat: 31.7622, lng: -106.4875 },  // Another example of a high-risk area
+];
+
 function App() {
   const [userLocation, setUserLocation] = useState(null);  // State to store user's location
   const [directions, setDirections] = useState(null);  // State to store the directions result
@@ -41,15 +47,12 @@ function App() {
       );
     } else {
       toast.error("Geolocation is not supported by this browser.");
-      alert('Geolocation is not supported by this browser.');
     }
   };
-  
 
   // useEffect to get the user's location when the component mounts
   useEffect(() => {
     getCurrentLocation();  // Call the function to get user's location
-    getCurrentLocation();
   }, []);
 
   // Debugging log to ensure that setDirections is passed correctly
@@ -71,42 +74,40 @@ function App() {
         {/* Inputs for Route Calculation */}
         <div className="route-section">
           {/* Pass setDirections to RouteComponent for handling directions */}
-          <RouteComponent userLocation={userLocation} setDirections={setDirections} />
+          <RouteComponent 
+            userLocation={userLocation} 
+            setDirections={setDirections} 
+            highRiskZones={highRiskZones}  // Pass the high-risk zones to RouteComponent
+          />
         </div>
 
         {/* Map Section */}
         <div className="map">
           <LoadScript
             googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-            libraries={['visualization']} // Include 'visualization' library for HeatMap
+            libraries={['visualization','places']} // Include 'visualization' library for HeatMap
           >
             <GoogleMap
-              mapContainerStyle={{ width: '100%', height: '100%' }}  // Map container style
-              center={userLocation ? userLocation : { lat: 31.7619, lng: -106.4850 }}  // Center the map on user location if available
+              mapContainerStyle={containerStyle}  // Map container style
+              center={userLocation ? userLocation : defaultCenter}  // Center the map on user location if available
               zoom={userLocation ? 14 : 9}  // Adjust zoom based on whether user location is available
-              mapContainerStyle={containerStyle}
-              center={userLocation ? userLocation : defaultCenter} // Center map on userLocation when available
-              zoom={userLocation ? 14 : 12} // Zoom in closer when userLocation is available
             >
-              {/* Render the directions on the map if available */}
-              {directions && <DirectionsRenderer directions={directions} />}
+              {directions && (
+          <>
+              {console.log("Rendering Directions:", directions)}  // Add this to debug
+            <DirectionsRenderer directions={directions} />
+            </>
+            )}
 
               {/* Render HeatMap Component */}
               <HeatMap />
 
-              {/* Render Route Component */}
-              <RouteComponent
-                userLocation={userLocation}
-                mapCenter={userLocation || defaultCenter}
-              />
             </GoogleMap>
           </LoadScript>
         </div>
       </div>
 
       {/* Toast Notifications for error messages */}
-
-      {/* Toast Notifications */}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
