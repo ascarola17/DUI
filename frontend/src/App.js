@@ -1,7 +1,11 @@
+// src/App.js
 import './App.css';
-import React from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
-import RouteComponent from './components/RouteComponent';
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import RouteComponent from './components/RouteComponent';  // Import the new route component
+import ReportFeature from './components/ReportFeature';    // Import the ReportFeature component
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Define your map container style
 const containerStyle = {
@@ -16,6 +20,41 @@ const defaultCenter = {
 };
 
 function App() {
+  const [userLocation, setUserLocation] = useState(null);
+
+  // Function to get user's current location
+  const getCurrentLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        error => {
+          console.error("Error obtaining location:", error);
+          toast.error("Unable to access your location.");
+        }
+      );
+    } else {
+      alert("Geolocation is not supported by this browser.");
+    }
+  };
+
+  // Get user's location when component mounts
+  useEffect(() => {
+    getCurrentLocation();
+    // Optionally, set up a watcher for location changes
+    // const watchId = navigator.geolocation.watchPosition(position => {
+    //   setUserLocation({
+    //     lat: position.coords.latitude,
+    //     lng: position.coords.longitude
+    //   });
+    // });
+    // return () => navigator.geolocation.clearWatch(watchId);
+  }, []);
+
   return (
     <div className="app-container">
       <header>
@@ -26,13 +65,7 @@ function App() {
         {/* Report Section */}
         <div className="report">
           <h2>Report</h2>
-          <p>Report content will go here.</p>
-        </div>
-
-        {/* Route Input Section */}
-        <div className="route-input">
-          <h2>Get Directions</h2>
-          <RouteComponent />
+          <ReportFeature />  {/* Integrate ReportFeature component */}
         </div>
 
         {/* Map Section */}
@@ -52,6 +85,12 @@ function App() {
           </LoadScript>
         </div>
       </div>
+
+      {/* Simulated Data Uploader */}
+      {/* <DataUploader /> */}
+
+      {/* Toast Notifications */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
 }
