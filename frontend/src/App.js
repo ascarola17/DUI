@@ -1,7 +1,7 @@
 import './App.css';
 import DataUploader from './components/DataUploader';  // Ensure the path to DataUploader is correct
 import React, { useState, useEffect } from 'react';  // Add this line
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import RouteComponent from './components/RouteComponent';  // Import the new route component
 
 const containerStyle = {
@@ -44,6 +44,16 @@ function App() {
           center={center}
           zoom={10}
         >
+           {/* If userLocation is available, render a marker */}
+           {userLocation && (
+            <Marker
+              position={userLocation}  // Show the marker at user's location
+              icon={{
+                url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'  // Optional: Blue dot icon
+              }}
+            />
+          )}
+
           {/* Other child components like markers can be added here */}
           <RouteComponent userLocation={userLocation} mapCenter={center} />
         </GoogleMap>
