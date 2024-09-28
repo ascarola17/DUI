@@ -77,7 +77,7 @@ function App() {
       </div>
 
       {/* Simulated Data Uploader */}
-      <DataUploader />
+      {/*<DataUploader />*/}
     </div>
   );
 }
