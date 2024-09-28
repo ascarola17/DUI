@@ -1,38 +1,46 @@
-.App {
-  text-align: center;
+/* Basic reset and page styles */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.app-container {
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  height: 100vh;
 }
 
-.App-link {
-  color: #61dafb;
+header {
+  background-color: #ffffff;
+  width: 100%;
+  padding: 20px;
+  text-align: center;
+  font-size: 24px;
+  color: rgb(0, 0, 0);
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.content {
+  position: relative; /* Needed for positioning the report over the map */
+  width: 100%;
+  height: 80vh; /* Let the map take up more space */
+}
+
+.report {
+  position: absolute;
+  top: 100px;  /* Distance from the top of the map */
+  left: 10px; /* Distance from the left of the map */
+  width: 300px; /* Fixed width for the report */
+  height: 70%;  /* Fixed height to control overflow */
+  overflow-y: scroll;  /* Add vertical scrolling if content exceeds height */
+  background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent background */
+  padding: 20px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Optional shadow for effect */
+  z-index: 2; /* Ensure it's on top of the map */
+}
+
+.map {
+  height: 100%; /* Map takes full height of content */
+  width: 100%;  /* Full width for the map */
 }
