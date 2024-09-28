@@ -1,18 +1,26 @@
-// src/components/RouteComponent.js
 import React, { useState } from 'react';
 import { DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 
-const RouteComponent = ({ userLocation, mapCenter }) => {
+const RouteComponent = ({ userLocation }) => {
   const [directions, setDirections] = useState(null);
   const [destination, setDestination] = useState('');
   const [routeRequested, setRouteRequested] = useState(false);
+  const [error, setError] = useState(null);
 
   // Handle form submission for getting the route
   const handleSubmit = (e) => {
-    e.preventDefault();
+    e.preventDefault();  // Prevent the default form submission behavior
+    console.log("Form submitted. Origin:", origin, "Destination:", destination);  // Check if the form is submitted
+    
+    if (origin.trim() === '' || destination.trim() === '') {
+      alert('Please enter both the current location and destination!');
+      return;
+    }
+    
     setRouteRequested(true);  // Indicate that route has been requested
+    setError(null);  // Clear any previous errors
   };
-
+  
   // Handle destination input change
   const handleChange = (e) => {
     setDestination(e.target.value);
@@ -31,23 +39,29 @@ const RouteComponent = ({ userLocation, mapCenter }) => {
         <button type="submit">Get Route</button>
       </form>
 
+      {/* Show error message if route fails */}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
+
       {/* DirectionsService to request the route */}
-      {routeRequested && userLocation && (
-        <DirectionsService
-          options={{
-            destination: destination,
-            origin: userLocation,
-            travelMode: 'DRIVING',  // You can change to 'WALKING', 'BICYCLING', etc.
-          }}
-          callback={(response) => {
-            if (response !== null && response.status === 'OK') {
-              setDirections(response);  // Set directions to render the route
-            } else {
-              console.log('Directions request failed');
-            }
-          }}
-        />
-      )}
+      {routeRequested && (
+  <DirectionsService
+    options={{
+      destination: destination,
+      origin: origin,
+      travelMode: 'DRIVING',  // You can change this to 'WALKING' or 'BICYCLING' for testing
+    }}
+    callback={(response, status) => {
+      console.log("Directions API response:", response, "Status:", status);  // Log the API response
+      if (status === 'OK' && response !== null) {
+        setDirections(response);  // Set the route response
+      } else {
+        setError('Failed to get directions, please try again.');
+        console.log('Directions request failed:', response);
+      }
+    }}
+  />
+)}
+
 
       {/* DirectionsRenderer to render the route on the map */}
       {directions && (
