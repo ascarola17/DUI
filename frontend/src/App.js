@@ -1,6 +1,11 @@
+// src/App.js
 import './App.css';
-import React, { useState } from 'react';
-import { GoogleMap, LoadScript } from '@react-google-maps/api';
+import React, { useState, useEffect } from 'react';
+import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import RouteComponent from './components/RouteComponent';  // Import the new route component
+import ReportFeature from './components/ReportFeature';    // Import the ReportFeature component
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 // Define your map container style
 const containerStyle = {
@@ -8,8 +13,8 @@ const containerStyle = {
   height: '100%',
 };
 
-// Set the center of the map
-const center = {
+// Set the center of the map as a fallback if user location is unavailable
+const defaultCenter = {
   lat: 31.7619, // Example latitude (El Paso)
   lng: -106.4850, // Example longitude (El Paso)
 };
@@ -30,12 +35,18 @@ function App() {
   // Function to get user's current location
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(position => {
-        setUserLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        });
-      });
+      navigator.geolocation.getCurrentPosition(
+        position => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        error => {
+          console.error("Error obtaining location:", error);
+          toast.error("Unable to access your location.");
+        }
+      );
     } else {
       alert("Geolocation is not supported by this browser.");
     }
@@ -44,6 +55,14 @@ function App() {
   // Get user's location when component mounts
   useEffect(() => {
     getCurrentLocation();
+    // Optionally, set up a watcher for location changes
+    // const watchId = navigator.geolocation.watchPosition(position => {
+    //   setUserLocation({
+    //     lat: position.coords.latitude,
+    //     lng: position.coords.longitude
+    //   });
+    // });
+    // return () => navigator.geolocation.clearWatch(watchId);
   }, []);
 
   return (
@@ -62,7 +81,7 @@ function App() {
         {/* Report Section */}
         <div className="report">
           <h2>Report</h2>
-          <p>Report content will go here.</p>
+          <ReportFeature />  {/* Integrate ReportFeature component */}
         </div>
 
         {/* Map Section */}
@@ -70,8 +89,8 @@ function App() {
           <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <GoogleMap
               mapContainerStyle={containerStyle}
-              center={center}
-              zoom={9}
+              center={userLocation ? userLocation : defaultCenter}  // Center map on userLocation when available
+              zoom={userLocation ? 14 : 9}  // Zoom in closer when userLocation is available
             >
               {/* If userLocation is available, render a marker */}
               {userLocation && (
@@ -84,14 +103,17 @@ function App() {
               )}
 
               {/* Render Route Component */}
-              <RouteComponent userLocation={userLocation} mapCenter={center} />
+              <RouteComponent userLocation={userLocation} mapCenter={userLocation || defaultCenter} />
             </GoogleMap>
           </LoadScript>
         </div>
       </div>
 
       {/* Simulated Data Uploader */}
-      {/*<DataUploader />*/}
+      {/* <DataUploader /> */}
+
+      {/* Toast Notifications */}
+      <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
 }
