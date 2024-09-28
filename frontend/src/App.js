@@ -3,9 +3,6 @@ import './App.css';
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';  // Import DirectionsRenderer
 import RouteComponent from './components/RouteComponent';  // Import RouteComponent
-import ReportFeature from './components/ReportFeature';    // Import ReportFeature
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import RouteComponent from './components/RouteComponent';
 import ReportFeature from './components/ReportFeature';
 import HeatMap from './components/HeatMap';
 import { ToastContainer, toast } from 'react-toastify';
@@ -30,7 +27,6 @@ function App() {
   // Function to get user's current location
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
-      // If geolocation is supported, get the current position
       navigator.geolocation.getCurrentPosition(
         (position) => {
           setUserLocation({
@@ -38,18 +34,17 @@ function App() {
             lng: position.coords.longitude,
           });
         },
-        error => {
-          toast.error("Unable to access your location.");  // Show error message if location cannot be retrieved
         (error) => {
           console.error('Error obtaining location:', error);
           toast.error('Unable to access your location.');
         }
       );
     } else {
-      toast.error("Geolocation is not supported by this browser.");  // Show error if geolocation is unsupported
+      toast.error("Geolocation is not supported by this browser.");
       alert('Geolocation is not supported by this browser.');
     }
   };
+  
 
   // useEffect to get the user's location when the component mounts
   useEffect(() => {
@@ -95,15 +90,6 @@ function App() {
             >
               {/* Render the directions on the map if available */}
               {directions && <DirectionsRenderer directions={directions} />}
-              {/* If userLocation is available, render a marker */}
-              {userLocation && (
-                <Marker
-                  position={userLocation} // Show the marker at user's location
-                  icon={{
-                    url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Optional: Blue dot icon
-                  }}
-                />
-              )}
 
               {/* Render HeatMap Component */}
               <HeatMap />
