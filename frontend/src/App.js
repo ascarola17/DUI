@@ -1,30 +1,20 @@
 // src/App.js
 import './App.css';
 import React, { useState, useEffect } from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
-import RouteComponent from './components/RouteComponent';  // Import the new route component
-import ReportFeature from './components/ReportFeature';    // Import the ReportFeature component
+import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';  // Import DirectionsRenderer
+import RouteComponent from './components/RouteComponent';  // Import RouteComponent
+import ReportFeature from './components/ReportFeature';    // Import ReportFeature
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
-// Define your map container style
-const containerStyle = {
-  width: '100%',
-  height: '100%'
-};
-
-// Set the center of the map as a fallback if user location is unavailable
-const defaultCenter = {
-  lat: 31.7619, // Example latitude (El Paso)
-  lng: -106.4850 // Example longitude (El Paso)
-};
-
 function App() {
-  const [userLocation, setUserLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);  // State to store user's location
+  const [directions, setDirections] = useState(null);  // State to store the directions result
 
   // Function to get user's current location
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
+      // If geolocation is supported, get the current position
       navigator.geolocation.getCurrentPosition(
         position => {
           setUserLocation({
@@ -33,32 +23,26 @@ function App() {
           });
         },
         error => {
-          console.error("Error obtaining location:", error);
-          toast.error("Unable to access your location.");
+          toast.error("Unable to access your location.");  // Show error message if location cannot be retrieved
         }
       );
     } else {
-      alert("Geolocation is not supported by this browser.");
+      toast.error("Geolocation is not supported by this browser.");  // Show error if geolocation is unsupported
     }
   };
 
-  // Get user's location when component mounts
+  // useEffect to get the user's location when the component mounts
   useEffect(() => {
-    getCurrentLocation();
-    // Optionally, set up a watcher for location changes
-    // const watchId = navigator.geolocation.watchPosition(position => {
-    //   setUserLocation({
-    //     lat: position.coords.latitude,
-    //     lng: position.coords.longitude
-    //   });
-    // });
-    // return () => navigator.geolocation.clearWatch(watchId);
+    getCurrentLocation();  // Call the function to get user's location
   }, []);
+
+  // Debugging log to ensure that setDirections is passed correctly
+  console.log("setDirections function in App.js:", setDirections);
 
   return (
     <div className="app-container">
       <header>
-        <h1>DUI Risk</h1>
+        <h1>DUI Risk</h1>  {/* App title */}
       </header>
 
       <div className="content">
@@ -68,28 +52,28 @@ function App() {
           <ReportFeature />  {/* Integrate ReportFeature component */}
         </div>
 
+        {/* Inputs for Route Calculation */}
+        <div className="route-section">
+          {/* Pass setDirections to RouteComponent for handling directions */}
+          <RouteComponent userLocation={userLocation} setDirections={setDirections} />
+        </div>
+
         {/* Map Section */}
         <div className="map">
-          <LoadScript
-            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-
-            loadingElement={<div>Loading Map...</div>}  // Add async loading element
-          >
+          <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
             <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={defaultCenter}  // Center map on default location
-              zoom={9}  // Default zoom level
+              mapContainerStyle={{ width: '100%', height: '100%' }}  // Map container style
+              center={userLocation ? userLocation : { lat: 31.7619, lng: -106.4850 }}  // Center the map on user location if available
+              zoom={userLocation ? 14 : 9}  // Adjust zoom based on whether user location is available
             >
-              {/* The route will be rendered by the DirectionsRenderer in RouteComponent */}
+              {/* Render the directions on the map if available */}
+              {directions && <DirectionsRenderer directions={directions} />}
             </GoogleMap>
           </LoadScript>
         </div>
       </div>
 
-      {/* Simulated Data Uploader */}
-      {/* <DataUploader /> */}
-
-      {/* Toast Notifications */}
+      {/* Toast Notifications for error messages */}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );

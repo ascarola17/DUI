@@ -1,74 +1,66 @@
+// src/components/RouteComponent.js
 import React, { useState } from 'react';
-import { DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 
-const RouteComponent = ({ userLocation }) => {
-  const [directions, setDirections] = useState(null);
+const RouteComponent = ({ userLocation, setDirections }) => {
+  // State for storing the origin (default to user's location) and destination
+  const [origin, setOrigin] = useState(userLocation ? `${userLocation.lat},${userLocation.lng}` : '');
   const [destination, setDestination] = useState('');
-  const [routeRequested, setRouteRequested] = useState(false);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState(null);  // State to store any errors related to fetching directions
 
-  // Handle form submission for getting the route
-  const handleSubmit = (e) => {
-    e.preventDefault();  // Prevent the default form submission behavior
-    console.log("Form submitted. Origin:", origin, "Destination:", destination);  // Check if the form is submitted
-    
-    if (origin.trim() === '' || destination.trim() === '') {
-      alert('Please enter both the current location and destination!');
+  // Debugging log to ensure setDirections is received correctly from App.js
+  console.log("Received setDirections function in RouteComponent:", setDirections);
+
+  // Handle form submission to get directions
+  const handleSubmit = (event) => {
+    event.preventDefault();  // Prevent form from refreshing the page
+
+    // Check if both origin and destination are provided
+    if (!origin || !destination) {
+      alert("Please enter both origin and destination.");
       return;
     }
-    
-    setRouteRequested(true);  // Indicate that route has been requested
-    setError(null);  // Clear any previous errors
-  };
-  
-  // Handle destination input change
-  const handleChange = (e) => {
-    setDestination(e.target.value);
+
+    // Set up options for the DirectionsService
+    const DirectionsServiceOptions = {
+      origin: origin,
+      destination: destination,
+      travelMode: 'DRIVING'  // Specify driving as the travel mode
+    };
+
+    // Create a new DirectionsService instance to request route information
+    const directionsService = new window.google.maps.DirectionsService();
+    directionsService.route(DirectionsServiceOptions, (result, status) => {
+      // Check if the Directions API returned a valid result
+      if (status === window.google.maps.DirectionsStatus.OK) {
+        console.log("Received directions:", result);  // Debugging log for the returned directions
+        setDirections(result);  // Pass the directions result to App.js using setDirections
+      } else {
+        console.error('Directions request failed:', result);  // Log any errors from the Directions API
+        setError('Failed to get directions.');  // Set error message
+      }
+    });
   };
 
   return (
     <div>
-      {/* Form to input the destination */}
       <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          placeholder="Enter destination" 
-          value={destination}
-          onChange={handleChange}
+        <input
+          type="text"
+          placeholder="Enter current location"
+          value={origin}
+          onChange={(e) => setOrigin(e.target.value)}  // Update origin as user types
         />
-        <button type="submit">Get Route</button>
+        <input
+          type="text"
+          placeholder="Enter destination"
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}  // Update destination as user types
+        />
+        <button type="submit">Get Directions</button>  {/* Button to submit the form and get directions */}
       </form>
 
-      {/* Show error message if route fails */}
+      {/* Show error message if the directions request fails */}
       {error && <p style={{ color: 'red' }}>{error}</p>}
-
-      {/* DirectionsService to request the route */}
-      {routeRequested && (
-  <DirectionsService
-    options={{
-      destination: destination,
-      origin: origin,
-      travelMode: 'DRIVING',  // You can change this to 'WALKING' or 'BICYCLING' for testing
-    }}
-    callback={(response, status) => {
-      console.log("Directions API response:", response, "Status:", status);  // Log the API response
-      if (status === 'OK' && response !== null) {
-        setDirections(response);  // Set the route response
-      } else {
-        setError('Failed to get directions, please try again.');
-        console.log('Directions request failed:', response);
-      }
-    }}
-  />
-)}
-
-
-      {/* DirectionsRenderer to render the route on the map */}
-      {directions && (
-        <DirectionsRenderer
-          directions={directions}
-        />
-      )}
     </div>
   );
 };
