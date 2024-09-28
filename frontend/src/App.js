@@ -4,11 +4,13 @@ import React, { useState, useEffect } from 'react';  // Add this line
 import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
 import RouteComponent from './components/RouteComponent';  // Import the new route component
 
+// Define your map container style
 const containerStyle = {
   width: '100%',
-  height: '400px'
+  height: '100%'
 };
 
+// Set the center of the map
 const center = {
   lat: 31.7619, // Example latitude (El Paso)
   lng: -106.4850 // Example longitude (El Paso)
@@ -36,6 +38,31 @@ function App() {
     getCurrentLocation();
   }, []);
   return (
+    <div className="app-container">
+      <header>
+        <h1>DUI Risk</h1>
+      </header>
+
+      <div className="content">
+        {/* Report Section */}
+        <div className="report">
+          <h2>Report</h2>
+          <p>Report content will go here.</p>
+        </div>
+
+        {/* Map Section */}
+        <div className="map">
+          <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
+            <GoogleMap
+              mapContainerStyle={containerStyle}
+              center={center}
+              zoom={9}
+            >
+              {/* Additional Map components (like markers) can go here */}
+            </GoogleMap>
+          </LoadScript>
+        </div>
+      </div>
     <div className="App">
       <h1>My Google Maps Integration</h1>
       <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
@@ -59,6 +86,8 @@ function App() {
         </GoogleMap>
       </LoadScript>
 
+      {/* Simulated Data Uploader */}
+      <DataUploader />
       {/*Similauted Data Uploaded here */}
       {/*<DataUploader /> */}
     </div>
