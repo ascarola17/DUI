@@ -13,7 +13,6 @@ import 'react-toastify/dist/ReactToastify.css';
 const containerStyle = {
   width: '100%',
   height: '100%',
-  height: '100%',
 };
 
 // Set the center of the map as a fallback if user location is unavailable
@@ -27,9 +26,7 @@ const highRiskZones = [
   { lat: 31.7641, lng: -106.4900 },  // Example of a high-risk area
   { lat: 31.7622, lng: -106.4875 },  // Another example of a high-risk area
 ];
-  lat: 31.7619, // Example latitude (El Paso)
-  lng: -106.4850, // Example longitude (El Paso)
-};
+
 
 function App() {
   // State for controlling dropdown and notification dot
@@ -42,7 +39,6 @@ function App() {
     setHasIssues(false);
   };
 
-  const [userLocation, setUserLocation] = useState(null);
   const [userLocation, setUserLocation] = useState(null);  // State to store user's location
   const [directions, setDirections] = useState(null);  // State to store the directions result
 
