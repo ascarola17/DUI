@@ -37,6 +37,7 @@ function App() {
   useEffect(() => {
     getCurrentLocation();
   }, []);
+
   return (
     <div className="app-container">
       <header>
@@ -58,38 +59,25 @@ function App() {
               center={center}
               zoom={9}
             >
-              {/* Additional Map components (like markers) can go here */}
+              {/* If userLocation is available, render a marker */}
+              {userLocation && (
+                <Marker
+                  position={userLocation}  // Show the marker at user's location
+                  icon={{
+                    url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'  // Optional: Blue dot icon
+                  }}
+                />
+              )}
+
+              {/* Render Route Component */}
+              <RouteComponent userLocation={userLocation} mapCenter={center} />
             </GoogleMap>
           </LoadScript>
         </div>
       </div>
-    <div className="App">
-      <h1>My Google Maps Integration</h1>
-      <LoadScript googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}>
-        <GoogleMap
-          mapContainerStyle={containerStyle}
-          center={center}
-          zoom={10}
-        >
-           {/* If userLocation is available, render a marker */}
-           {userLocation && (
-            <Marker
-              position={userLocation}  // Show the marker at user's location
-              icon={{
-                url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png'  // Optional: Blue dot icon
-              }}
-            />
-          )}
-
-          {/* Other child components like markers can be added here */}
-          <RouteComponent userLocation={userLocation} mapCenter={center} />
-        </GoogleMap>
-      </LoadScript>
 
       {/* Simulated Data Uploader */}
       <DataUploader />
-      {/*Similauted Data Uploaded here */}
-      {/*<DataUploader /> */}
     </div>
   );
 }
