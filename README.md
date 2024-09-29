@@ -30,11 +30,7 @@ Make sure Node.js and npm are installed. You can download and install them from 
 
 To set up this project locally, follow these steps:
 
-1. Navigate to the project directory:
-
-   ```bash
-     cd frontend
-2. Install dependenies:
+1. Install dependenies:
 
    ```bash
      npm install
@@ -44,15 +40,16 @@ To set up this project locally, follow these steps:
      npm install firebase
      npm install @react-google-maps/api
 
-3. Create your .env file in the root of the project and add you Google API key:
+2. Create your .env file in the root of the project and add you Google API key:
 
    ```makefile
      REACT_APP_GOOGLE_MAPS_API_KEY = your_google_maps_api_key
-4. In your first terminal you will CD into the backend and run the command to start the backend
+3. In your first terminal you will CD into the backend and run the command to start the backend
 
    ```bash
      cd backend
      npm node server.js
+
    
 4. Then you will make a second terminal and CD into the frontend and start the development server with the command:
 
