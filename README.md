@@ -6,10 +6,7 @@ DUI Risk Heatmap is a web application designed to visualize DUI risk areas using
 
 ## Features
 
-- **Interactive Map**: Displays a heatmap of DUI risk areas based on user reports.
-- **Incident Reporting**: Users can report incidents using audio recordings that are transcribed and stored.
-- **User Location Tracking**: The app fetches the user's current location to provide context for incident reports.
-- **Recent Reports Display**: Users can view a list of recently submitted reports.
+- **What features our project has**
 
 ## Technologies Used
 
@@ -24,3 +21,24 @@ DUI Risk Heatmap is a web application designed to visualize DUI risk areas using
 To set up this project locally, follow these steps:
 
 1. Clone the repository:
+   ```bash
+    https://github.com/ascarola17/DUI.git
+2. Navigate to the project directory:
+
+   ```bash
+     cd frontend
+4. Install dependenies:
+
+   ```bash
+     npm install
+
+5. Create your .env file in the root of the project and add you Google API key:
+
+   ```makefile
+     REACT_APP_GOOGLE_MAPS_API_KEY = your_google_maps_api_key
+   
+5. Start the development server:
+
+   ```bash
+     npm start
+
