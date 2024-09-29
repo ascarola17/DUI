@@ -40,7 +40,7 @@ header {
 
 /* Map takes most of the screen */
 .map {
-  height: 50%; /* Adjust to fill the remaining space */
+  height: 95%; /* Adjust to fill the remaining space */
   width: 100%; /* Ensure full width */
   max-height: 80vh; /* Adjust to make sure it doesn't overflow on smaller screens */
 }
