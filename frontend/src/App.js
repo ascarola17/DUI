@@ -101,6 +101,7 @@ function App() {
             userLocation={userLocation} 
             setDirections={setDirections} 
             highRiskZones={highRiskZones}  // Pass the high-risk zones to RouteComponent
+            toast={toast} 
           />
         </div>
           <ReportFeature />  {/* Integrate ReportFeature component */}
@@ -149,5 +150,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
