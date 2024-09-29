@@ -31,22 +31,12 @@ const highRiskZones = [
 
 function App() {
   // State for controlling dropdown and notification dot
+  const [showReportList, setShowReportList] = useState(false); // Define state for showing report list
+  const [hasNewReport, setHasNewReport] = useState(false); // Define state for indicating new reports
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [hasIssues, setHasIssues] = useState(true);  // Example: Assume there's an issue
   const [userLocation, setUserLocation] = useState(null);  // State to store user's location
   const [directions, setDirections] = useState(null);  // State to store the directions result
 
-  // Toggle dropdown menu visibility
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-    setHasIssues(false);
-  };
-
-  
-  // Function to get user's current location
-  const [showReportList, setShowReportList] = useState(false);
-  const [userLocation, setUserLocation] = useState(null);
-  const [hasNewReport, setHasNewReport] = useState(true); // Track new reports
 
   const toggleReports = () => {
     setShowReportList(!showReportList);

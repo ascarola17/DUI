@@ -204,6 +204,7 @@ const ReportFeature = () => {
 
 // Inline styles for simplicity
 const recordingStyle = {
+  color: '#black',
   position: 'fixed',
   bottom: '80px',
   right: '20px',

@@ -51,7 +51,7 @@
   .map-container {
     width: 100%;
     max-width: 900px; /* Limit the max width of the map */
-    height: 400px; /* Adjust the height as needed */
+    height: 100%; /* Adjust the height as needed */
     z-index: 0; /* Ensure the map is behind the form */
   }
   
