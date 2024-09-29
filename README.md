@@ -60,7 +60,7 @@ To set up this project locally, follow these steps:
      cd frontend
      npm start
 
-### Google Maps & Cloud Speech-to-Text API Help
+### Google Maps Platform API & Cloud Speech-to-Text API Help
 This is a small tutorial regarding how to use the API key with the Google Vision API.
 * Visit [console.cloud.google.com](https://console.cloud.google.com/welcome/ )
 * Create a new project by selecting "Select a project".
