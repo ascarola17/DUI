@@ -1,16 +1,19 @@
-
 import React, { useState } from 'react';
 
 const RouteComponent = ({ userLocation, setDirections, highRiskZones }) => {
   const [origin, setOrigin] = useState(userLocation ? `${userLocation.lat},${userLocation.lng}` : '');
   const [destination, setDestination] = useState('');
   const [error, setError] = useState(null);
-  const [directionsResult, setDirectionsResult] = useState(null); // Store the entire DirectionsResult
+  const [directionsResult, setDirectionsResult] = useState(null);  // Store the entire DirectionsResult
   const [showOptions, setShowOptions] = useState(false);
 
+  // Function to determine if a route passes through high-risk zones
   const isRouteSafe = (route, heatZones) => {
-    // Implement your safety logic here
-    return true; // Placeholder
+    return !route.overview_path.some(point => 
+      heatZones.some(zone => 
+        Math.abs(point.lat() - zone.lat) < 0.01 && Math.abs(point.lng() - zone.lng) < 0.01
+      )
+    );
   };
 
   const handleSubmit = (event) => {

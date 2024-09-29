@@ -1,5 +1,4 @@
-// src/App.js
-
+import coordinates from './coordinates.json'; 
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
@@ -23,19 +22,13 @@ const defaultCenter = {
   lng: -106.4850, // El Paso longitude
 };
 
-// Example high-risk zones (replace with actual data)
-const highRiskZones = [
-  { lat: 31.7641, lng: -106.4900 },  // Example of a high-risk area
-  { lat: 31.7622, lng: -106.4875 },  // Another example of a high-risk area
-];
-
-
 function App() {
   // State for controlling dropdown and notification dot
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasIssues, setHasIssues] = useState(true);  // Example: Assume there's an issue
   const [userLocation, setUserLocation] = useState(null);  // State to store user's location
   const [directions, setDirections] = useState(null);  // State to store the directions result
+  const [highRiskZones, setHighRiskZones] = useState([]);  // State for high-risk zones
 
   // Toggle dropdown menu visibility
   const toggleDropdown = () => {
@@ -43,7 +36,6 @@ function App() {
     setHasIssues(false);
   };
 
-  
   // Function to get user's current location
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
@@ -62,6 +54,21 @@ function App() {
     } else {
     }
   };
+
+  // UseEffect to load high-risk zones from coordinates.json
+  useEffect(() => {
+    // Convert the array of coordinates to lat/lng objects
+    const convertCoordinates = (array) => array.map(([lat, lng]) => ({ lat, lng }));
+
+    // Combine the high-risk zones from El Paso, Las Vegas, and Phoenix
+    const combinedHighRiskZones = [
+      ...convertCoordinates(coordinates.elPasoCoordinates),
+      ...convertCoordinates(coordinates.lasVegasCoordinates),
+      ...convertCoordinates(coordinates.phoenixCoordinates)
+    ];
+
+    setHighRiskZones(combinedHighRiskZones); // Set the high-risk zones
+  }, []);
 
   // Get user's location when the component mounts
   useEffect(() => {
