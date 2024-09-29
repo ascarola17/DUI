@@ -6,7 +6,10 @@ DUI Risk Heatmap is a web application designed to visualize DUI risk areas using
 
 ## Features
 
-- **What features our project has**
+- **User-Friendly Map Interactions**
+- **Interactive DUI Reporting**
+- **Real-Time Heatmap Visualization**
+- **High-Risk Zone Identification**
 
 ## Technologies Used
 
