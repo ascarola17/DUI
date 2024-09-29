@@ -1,6 +1,7 @@
-// src/components/HeatMap.js
 import React, { useEffect, useState } from 'react';
 import { HeatmapLayer } from '@react-google-maps/api';
+import { collection, getDocs } from 'firebase/firestore';
+import { db } from '../firebase'; // Ensure your Firebase config is correct
 import coordinates from '../coordinates.json'; // Adjust the path as necessary
 
 const HeatMap = () => {
@@ -12,39 +13,61 @@ const HeatMap = () => {
       return;
     }
 
-    // Transform the coordinates data into an array of points
-    let data = [];
+    const fetchData = async () => {
+      let data = [];
+      try {
+        // Attempt to fetch data from Firebase
+        const reportsCollection = collection(db, 'drunkDrivingIncidents');
+        const snapshot = await getDocs(reportsCollection);
+        data = snapshot.docs.map((doc) => doc.data());
+        console.log('Fetched data from Firebase:', data);
+      } catch (error) {
+        console.error('Error fetching data from Firebase:', error);
+        if (error.code === 'resource-exhausted') {
+          console.error('Firebase quota exceeded. Falling back to JSON data.');
+        } else {
+          console.error('An error occurred while fetching data. Falling back to JSON data.');
+        }
+        // Fallback to JSON data
+        data = transformCoordinatesData();
+      }
 
-    Object.keys(coordinates).forEach((cityKey) => {
-      const cityCoordinates = coordinates[cityKey]; // Array of coordinate pairs
+      // Process data to create heatmapData
+      const locations = data
+        .filter((point) => point.latitude && point.longitude)
+        .map((point) => {
+          const location = new window.google.maps.LatLng(point.latitude, point.longitude);
+          return {
+            location,
+            weight: point.weight || 1,
+          };
+        });
 
-      cityCoordinates.forEach((coordinatePair) => {
-        coordinatePair.forEach((point) => {
-          // Each point is [latitude, longitude]
-          const [latitude, longitude] = point;
-          data.push({
-            latitude,
-            longitude,
-            weight: 1, // You can adjust the weight as needed
+      setHeatmapData(locations);
+    };
+
+    const transformCoordinatesData = () => {
+      let data = [];
+
+      Object.keys(coordinates).forEach((cityKey) => {
+        const cityCoordinates = coordinates[cityKey];
+
+        cityCoordinates.forEach((coordinatePair) => {
+          coordinatePair.forEach((point) => {
+            const [latitude, longitude] = point;
+            data.push({
+              latitude,
+              longitude,
+              weight: 1, // Adjust weight as needed
+            });
           });
         });
       });
-    });
 
-    // Now `data` is an array of points with latitude and longitude
-    console.log('Transformed data for heatmap:', data);
+      return data;
+    };
 
-    const locations = data
-      .filter((point) => point.latitude && point.longitude)
-      .map((point) => {
-        const location = new window.google.maps.LatLng(point.latitude, point.longitude);
-        return {
-          location,
-          weight: point.weight || 1,
-        };
-      });
-
-    setHeatmapData(locations);
+    fetchData();
   }, []);
 
   // Custom gradient for high-risk zones

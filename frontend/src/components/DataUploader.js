@@ -8,7 +8,8 @@ const DataUploader = () => {
   // Function to upload incidents to Firebase
   const uploadDataToFirebase = async () => {
     // Define coordinate pairs for El Paso (start and end points)
-   const elPasoCoordinates = [
+    /*
+    const elPasoCoordinates = [
       [[31.7758889, -106.5021667], [31.7756111, -106.5019444]],
       [[31.7760000, -106.5022000], [31.7765000, -106.5023000]],
       [[31.7686944, -106.4894722], [31.7672222, -106.4918611]],
@@ -40,6 +41,13 @@ const DataUploader = () => {
       [[36.155411, -115.280789], [36.075604, -115.279640]]
     ];
 
+    // Generate incidents for El Paso with interpolated coordinates (30 incidents per segment)
+    const elPasoIncidents = generateCityIncidents('El Paso', elPasoCoordinates, 30);
+
+    // Generate incidents for Las Vegas with interpolated coordinates (30 incidents per segment)
+    const lasVegasIncidents = generateCityIncidents('Las Vegas', lasVegasCoordinates, 30);
+    */
+
     // Define coordinate pairs for Phoenix (start and end points)
     const phoenixCoordinates = [
       [[33.669768, -112.114297], [33.430462, -112.108515]],
@@ -58,17 +66,11 @@ const DataUploader = () => {
       [[33.479501, -111.976506], [33.478698, -112.305084]]
     ];
 
-    // Generate incidents for El Paso with interpolated coordinates (30 incidents per segment)
-    const elPasoIncidents = generateCityIncidents('El Paso', elPasoCoordinates, 30);
-
-    // Generate incidents for Las Vegas with interpolated coordinates (30 incidents per segment)
-    const lasVegasIncidents = generateCityIncidents('Las Vegas', lasVegasCoordinates, 30);
-
     // Generate incidents for Phoenix with interpolated coordinates (30 incidents per segment)
     const phoenixIncidents = generateCityIncidents('Phoenix', phoenixCoordinates, 30);
 
-    // Combine all incidents into one array
-    const allIncidents = [...elPasoIncidents, ...lasVegasIncidents, ...phoenixIncidents];
+    // Combine incidents for Phoenix only
+    const allIncidents = [...phoenixIncidents];
 
     try {
       // Loop through each incident and upload it to Firestore
