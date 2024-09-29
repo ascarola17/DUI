@@ -12,7 +12,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Define your map container style
 const containerStyle = {
   width: '100%',
-  height: '100%',
+  height: '400px'
 };
 
 // Set the center of the map as a fallback if user location is unavailable
@@ -32,6 +32,8 @@ function App() {
   // State for controlling dropdown and notification dot
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [hasIssues, setHasIssues] = useState(true);  // Example: Assume there's an issue
+  const [userLocation, setUserLocation] = useState(null);  // State to store user's location
+  const [directions, setDirections] = useState(null);  // State to store the directions result
 
   // Toggle dropdown menu visibility
   const toggleDropdown = () => {
@@ -39,9 +41,7 @@ function App() {
     setHasIssues(false);
   };
 
-  const [userLocation, setUserLocation] = useState(null);  // State to store user's location
-  const [directions, setDirections] = useState(null);  // State to store the directions result
-
+  
   // Function to get user's current location
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
