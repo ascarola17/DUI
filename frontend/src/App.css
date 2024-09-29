@@ -4,6 +4,7 @@ body, html, #root {
   padding: 0;
   height: 100%;
   background-color: hsl(0, 0%, 12%);
+  font-size: 16px; /* Base font size for using rem units */
 }
 
 .app-container {
@@ -17,11 +18,11 @@ body, html, #root {
 header {
   background-color: hsl(0, 0%, 12%);
   width: 100%;
-  padding: 20px;
+  padding: 1.25rem; /* Use rem for scalable padding */
   text-align: center;
-  font-size: 28px;
+  font-size: 1.75rem; /* Use rem for scalable font size */
   color: #ffffff;
-  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1); /* Use rem for box-shadow */
 }
 
 /* Main content container */
@@ -29,22 +30,25 @@ header {
   position: relative;
   flex: 1;
   display: flex;
+  flex-direction: column; /* Allow content to stack vertically */
   width: 100%;
   height: 90vh; /* Flexible height based on the viewport */
   overflow: hidden;
+  align-items: center;
+  justify-content: center;
 }
 
 /* Map takes most of the screen */
 .map {
-  flex: 1;
-  height: 100%; /* Adjust to fill the remaining space */
-  width: 100%;
+  height: 50%; /* Adjust to fill the remaining space */
+  width: 100%; /* Ensure full width */
+  max-height: 80vh; /* Adjust to make sure it doesn't overflow on smaller screens */
 }
 
 /* Logo container */
 .logo-container {
-  top: 20px;
-  right: 20px;
+  top: 2vh;  /* Use vh for flexible positioning based on viewport height */
+  right: 2vw; /* Use vw for flexible positioning based on viewport width */
   position: absolute;
   cursor: pointer;
   display: inline-block;
@@ -52,8 +56,8 @@ header {
 }
 
 .logo {
-  width: 40px;  /* Make the logo smaller */
-  height: 40px;  /* Keep it a square to ensure it's circular */
+  width: 2.5rem;  /* Use rem for scalable logo size */
+  height: 2.5rem;  /* Keep it a square to ensure it's circular */
   border-radius: 50%;  /* This makes the image circular */
   object-fit: cover;  /* Ensures the image scales properly within the circle */
 }
@@ -61,13 +65,17 @@ header {
 /* Notification dot */
 .notification-dot {
   position: absolute;
-  top: -5px;
-  right: -5px;
-  width: 12px;
-  height: 12px;
+  top: -0.3125rem; /* Use rem for flexible positioning */
+  right: -0.3125rem;
+  width: 0.75rem; /* Use rem for scalable dot size */
+  height: 0.75rem;
   background-color: red;
   border-radius: 50%;
-  border: 2px solid white;
+  transition: background-color 0.3s ease; /* Add transition for smooth appearance change */
+}
+
+.notification-dot.off {
+  background-color: transparent; /* Makes the notification disappear when off */
 }
 
 .blink {
@@ -86,21 +94,6 @@ header {
   }
 }
 
-/* Dropdown menu styling */
-.dropdown-menu {
-  position: absolute;
-  top: 50px;  /* Distance below the logo */
-  right: 20px;
-  background-color: white;
-  width: 300px; /* Fixed width for the report */
-  max-height: 70vh; /* Flexible height based on viewport */
-  overflow-y: scroll;  /* Enable scrolling */
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  padding: 10px;
-  text-align: left;
-}
 
 /* For mobile screens */
 @media (max-width: 768px) {
@@ -116,8 +109,14 @@ header {
 
   .dropdown-menu {
     width: 90vw; /* Make the report menu larger on small screens */
-    top: 60px;
-    right: 5px;
+    top: 5vh;
+    right: 1vw;
     height: 50vh; /* Adjust height for smaller devices */
+  }
+
+  /* Adjust logo for smaller screens */
+  .logo-container {
+    top: 1.25rem; /* Adjust logo slightly */
+    right: 1.25rem;
   }
 }

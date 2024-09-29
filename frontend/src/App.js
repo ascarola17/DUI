@@ -19,9 +19,11 @@ const defaultCenter = {
 function App() {
   const [showReportList, setShowReportList] = useState(false);
   const [userLocation, setUserLocation] = useState(null);
+  const [hasNewReport, setHasNewReport] = useState(true); // Track new reports
 
   const toggleReports = () => {
-    setShowReportList(!showReportList); // Toggle the visibility of the report list
+    setShowReportList(!showReportList);
+    setHasNewReport(false); // Turn off the red dot when the logo is clicked
   };
 
   const getCurrentLocation = () => {
@@ -47,6 +49,10 @@ function App() {
     getCurrentLocation();
   }, []);
 
+  const onNewReportAdded = () => {
+    setHasNewReport(true); // Turn the red dot back on when a new report is added
+  };
+
   return (
     <div className="app-container">
       <header>
@@ -54,14 +60,14 @@ function App() {
       </header>
 
       <div className="logo-container" onClick={toggleReports}>
-        <img src="logo.jpg" alt="Description of image" className="logo" />
-        {<span className="notification-dot"></span>}
+        <img src="logo.jpg" alt="DUI Logo" className="logo" />
+        <span className={`notification-dot ${!hasNewReport ? 'off' : ''}`}></span>
       </div>
 
       <div className="content">
         {/* Report Section */}
         {showReportList && (
-          <ReportFeature />  // Conditionally render the ReportFeature when showReports is true
+          <ReportFeature showReportList={showReportList} onNewReport={onNewReportAdded} />
         )}
 
         {/* Map Section */}
