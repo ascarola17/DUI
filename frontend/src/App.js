@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from 'react';
 import './App.css';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
 import HeatMap from './components/HeatMap'; // HeatMap component
 import ReportFeature from './components/ReportFeature'; // Report feature component
 import RouteComponent from './components/RouteComponent'; // Route component
