@@ -32,10 +32,10 @@ const ReportButton = ({ onReport, isRecording }) => {
 // Inline styles for the button
 const buttonStyle = {
   position: 'fixed',
-  bottom: '20px',
-  right: '20px',
+  bottom: '85px',
+  right: '60px',
   padding: '15px 25px',
-  fontSize: '18px',
+  fontSize: '15px',
   color: '#fff',
   border: 'none',
   borderRadius: '50px',

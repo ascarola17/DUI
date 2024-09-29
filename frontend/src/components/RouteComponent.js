@@ -1,44 +1,70 @@
-// src/components/RouteComponent.js
+
 import React, { useState } from 'react';
 
-const RouteComponent = ({ userLocation, setDirections }) => {
-  // State for storing the origin (default to user's location) and destination
+const RouteComponent = ({ userLocation, setDirections, highRiskZones }) => {
   const [origin, setOrigin] = useState(userLocation ? `${userLocation.lat},${userLocation.lng}` : '');
   const [destination, setDestination] = useState('');
-  const [error, setError] = useState(null);  // State to store any errors related to fetching directions
+  const [error, setError] = useState(null);
+  const [directionsResult, setDirectionsResult] = useState(null); // Store the entire DirectionsResult
+  const [showOptions, setShowOptions] = useState(false);
 
-  // Debugging log to ensure setDirections is received correctly from App.js
-  console.log("Received setDirections function in RouteComponent:", setDirections);
+  const isRouteSafe = (route, heatZones) => {
+    // Implement your safety logic here
+    return true; // Placeholder
+  };
 
-  // Handle form submission to get directions
   const handleSubmit = (event) => {
-    event.preventDefault();  // Prevent form from refreshing the page
+    event.preventDefault();
 
-    // Check if both origin and destination are provided
     if (!origin || !destination) {
       alert("Please enter both origin and destination.");
       return;
     }
 
-    // Set up options for the DirectionsService
     const DirectionsServiceOptions = {
       origin: origin,
       destination: destination,
-      travelMode: 'DRIVING'  // Specify driving as the travel mode
+      travelMode: 'DRIVING',
+      provideRouteAlternatives: true,
     };
 
-    // Create a new DirectionsService instance to request route information
     const directionsService = new window.google.maps.DirectionsService();
     directionsService.route(DirectionsServiceOptions, (result, status) => {
-      // Check if the Directions API returned a valid result
       if (status === window.google.maps.DirectionsStatus.OK) {
-        console.log("Received directions:", result);  // Debugging log for the returned directions
-        setDirections(result);  // Pass the directions result to App.js using setDirections
+        console.log("Received directions:", result);
+
+        setDirectionsResult(result); // Store the entire DirectionsResult
+        setShowOptions(true);
       } else {
-        console.error('Directions request failed:', result);  // Log any errors from the Directions API
-        setError('Failed to get directions.');  // Set error message
+        console.error('Directions request failed:', result);
+        setError('Failed to get directions.');
       }
     });
+  };
+
+  const chooseFastestRoute = () => {
+    const fastestRouteIndex = 0; // Assuming the first route is the fastest
+    const newDirectionsResult = {
+      ...directionsResult,
+      routes: [directionsResult.routes[fastestRouteIndex]],
+    };
+    setDirections(newDirectionsResult);
+    setShowOptions(false);
+  };
+
+  const chooseSafestRoute = () => {
+    const safeRoutes = directionsResult.routes.filter((route) => isRouteSafe(route, highRiskZones));
+    if (safeRoutes.length > 0) {
+      const newDirectionsResult = {
+        ...directionsResult,
+        routes: [safeRoutes[0]], // Take the first safe route
+      };
+      setDirections(newDirectionsResult);
+    } else {
+      alert("No safe routes available, defaulting to fastest route.");
+      chooseFastestRoute(); // Fall back to the fastest route
+    }
+    setShowOptions(false);
   };
 
   return (
@@ -48,18 +74,24 @@ const RouteComponent = ({ userLocation, setDirections }) => {
           type="text"
           placeholder="Enter current location"
           value={origin}
-          onChange={(e) => setOrigin(e.target.value)}  // Update origin as user types
+          onChange={(e) => setOrigin(e.target.value)}
         />
         <input
           type="text"
           placeholder="Enter destination"
           value={destination}
-          onChange={(e) => setDestination(e.target.value)}  // Update destination as user types
+          onChange={(e) => setDestination(e.target.value)}
         />
-        <button type="submit">Get Directions</button>  {/* Button to submit the form and get directions */}
+        <button type="submit">Submit</button>
       </form>
 
-      {/* Show error message if the directions request fails */}
+      {showOptions && (
+        <div>
+          <button onClick={chooseFastestRoute}>Take Fastest Route</button>
+          <button onClick={chooseSafestRoute}>Take Safest Route</button>
+        </div>
+      )}
+
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );

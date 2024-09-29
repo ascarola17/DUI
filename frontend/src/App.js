@@ -9,11 +9,12 @@ import RouteComponent from './components/RouteComponent'; // Route component
 import DataUploader from './components/DataUploader'; // Data uploader component
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+// import Logo from './Logo.webp'; // Make sure the path is correct
 
 // Define your map container style
 const containerStyle = {
   width: '100%',
-  height: '100vh', // Full viewport height
+  height: '400px'
 };
 
 // Set the default center of the map (El Paso coordinates)
@@ -22,10 +23,28 @@ const defaultCenter = {
   lng: -106.4850, // El Paso longitude
 };
 
-function App() {
-  const [userLocation, setUserLocation] = useState(null);
+// Example high-risk zones (replace with actual data)
+const highRiskZones = [
+  { lat: 31.7641, lng: -106.4900 },  // Example of a high-risk area
+  { lat: 31.7622, lng: -106.4875 },  // Another example of a high-risk area
+];
 
-  // Function to get the user's current location
+
+function App() {
+  // State for controlling dropdown and notification dot
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+  const [hasIssues, setHasIssues] = useState(true);  // Example: Assume there's an issue
+  const [userLocation, setUserLocation] = useState(null);  // State to store user's location
+  const [directions, setDirections] = useState(null);  // State to store the directions result
+
+  // Toggle dropdown menu visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+    setHasIssues(false);
+  };
+
+  
+  // Function to get user's current location
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -41,13 +60,12 @@ function App() {
         }
       );
     } else {
-      alert('Geolocation is not supported by this browser.');
     }
   };
 
   // Get user's location when the component mounts
   useEffect(() => {
-    getCurrentLocation();
+    getCurrentLocation();  // Call the function to get user's location
   }, []);
 
   return (
@@ -56,6 +74,12 @@ function App() {
         <h1>DUI Risk Heatmap</h1>
       </header>
 
+      {/* Logo with a notification dot (conditionally rendered based on hasIssues) */}
+      <div className="logo-container" onClick={toggleDropdown}>
+        <img src="logo.jpg" alt="Description of image" className="logo" />
+        {hasIssues && <span className="notification-dot"></span>} {/* Use the hasIssues state here */}
+      </div>
+
       <div className="content">
         {/* Report Section */}
         <div className="report">
@@ -63,26 +87,34 @@ function App() {
           <ReportFeature /> {/* Integrate ReportFeature component */}
         </div>
 
+        {/* Inputs for Route Calculation */}
+        <div className="route-section">
+          {/* Pass setDirections to RouteComponent for handling directions */}
+          <RouteComponent 
+            userLocation={userLocation} 
+            setDirections={setDirections} 
+            highRiskZones={highRiskZones}  // Pass the high-risk zones to RouteComponent
+          />
+        </div>
+          <ReportFeature />  {/* Integrate ReportFeature component */}
+
         {/* Map Section */}
         <div className="map">
           <LoadScript
-            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY} // Ensure your API key is set in .env
-            libraries={['visualization']} // Include 'visualization' library for HeatMap
+            googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
+            libraries={['visualization','places']} // Include 'visualization' library for HeatMap
           >
             <GoogleMap
-              mapContainerStyle={containerStyle}
-              center={userLocation ? userLocation : defaultCenter} // Center map on userLocation if available
-              zoom={userLocation ? 14 : 12} // Zoom in if userLocation is available
+              mapContainerStyle={containerStyle}  // Map container style
+              center={userLocation ? userLocation : defaultCenter}  // Center the map on user location if available
+              zoom={userLocation ? 14 : 9}  // Adjust zoom based on whether user location is available
             >
-              {/* User Location Marker */}
-              {userLocation && (
-                <Marker
-                  position={userLocation}
-                  icon={{
-                    url: 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png', // Blue marker for user location
-                  }}
-                />
-              )}
+              {directions && (
+          <>
+              {console.log("Rendering Directions:", directions)}  // Add this to debug
+            <DirectionsRenderer directions={directions} />
+            </>
+            )}
 
               {/* HeatMap Component */}
               <HeatMap />

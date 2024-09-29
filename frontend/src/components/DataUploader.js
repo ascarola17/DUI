@@ -94,7 +94,7 @@ const DataUploader = () => {
 
   return (
     <div>
-      {/* <h2>Uploading Data to Firebase...</h2> */}
+    {/* <h2>Uploading Data to Firebase...</h2>*/ } 
     </div>
   );
 };
