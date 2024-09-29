@@ -40,7 +40,7 @@ To set up this project locally, follow these steps:
      npm install firebase
      npm install @react-google-maps/api
 
-2. Create your .env file in the root of the project and add you Google API key:
+2. Create your .env file in the root of the project and add your Google API key:
 
    ```makefile
      REACT_APP_GOOGLE_MAPS_API_KEY = your_google_maps_api_key
