@@ -46,3 +46,22 @@ To set up this project locally, follow these steps:
    ```bash
      npm start
 
+### Google Maps & Cloud Speech-to-Text API Help
+This is a small tutorial regarding how to use the API key with the Google Vision API.
+* Visit [console.cloud.google.com](https://console.cloud.google.com/welcome/ )
+* Create a new project by selecting "Select a project".
+* Ensure your project is selected before developing.
+* At the search bar type in "Google Maps Platform" and click "Enable".
+* Do the same for the "Cloud Speech-to-Text" and click "Enable".
+* From the Navigation Menu:
+  * Hover over the "APIs & Services" tab.
+  * Click on "Credentials.
+  * Click "+ Create Credentials".
+  * Select API key and within the restrictions enable both Google Maps Platform and Cloud Speech-to-Text
+
+## About Us
+
+Sun City Solutions - suncitysolutions2024@gmail.com
+
+[https://github.com/ascarola17/DUI](https://github.com/ascarola17/DUI)
+
