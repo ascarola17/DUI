@@ -25,25 +25,38 @@ header {
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.1); /* Use rem for box-shadow */
 }
 
-/* Main content container */
+/* Main container holding the content */
 .content {
-  position: relative;
-  flex: 1;
   display: flex;
-  flex-direction: column; /* Allow content to stack vertically */
+  flex-direction: column;
   width: 100%;
-  height: 100%; /* Flexible height based on the viewport */
+  height: 100%;
+  flex-grow: 1; /* Allow it to grow and fill the available space */
   overflow: hidden;
   align-items: center;
   justify-content: center;
 } 
 
-/* Map takes most of the screen */
-.map {
-  flex: 1;
-  width: 500%; /* Ensure full width */
+/* Map container should flex-grow and take up the full space */
+.map-container {
+  display: flex;
+  flex: 1; /* This allows the map to grow and fill remaining space */
+  width: 100%;
   height: 100%;
-  max-height: 80vh; /* Adjust to make sure it doesn't overflow on smaller screens */
+}
+
+/* The actual map element itself should fill its container */
+.map {
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure the form does not interfere with the map's size */
+form {
+  width: 100%;
+  max-width: 400px;
+  z-index: 1; /* Keep the form above the map */
+  padding: 10px;
 }
 
 /* Logo container */
@@ -74,31 +87,30 @@ header {
   height: 0.75rem;
   background-color: red;
   border-radius: 50%;
-  transition: background-color 0.3s ease; /* Add transition for smooth appearance change */
+  border: 2px solid white;
 }
 
-.notification-dot.off {
-  background-color: transparent; /* Makes the notification disappear when off */
+.dropdown-menu {
+  position: absolute;
+  top: 50px;  /* Distance below the logo */
+  left: 0;
+  background-color: white;
+  width: 300px; /* Fixed width for the report */
+  height: 70%;  /* Fixed height to control overflow */
+  overflow-y: scroll;  /* Add vertical scrolling if content exceeds height */
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+  padding: 10px;
+  width: 150px;
+  text-align: left;
 }
 
-.blink {
-  animation: blink-animation 1s infinite; /* Blink every second */
+button {
+  /* Reset button styles for consistency */
+  font-family: inherit;
 }
 
-@keyframes blink-animation {
-  0% {
-    opacity: 1;
-  }
-  50% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 1;
-  }
-}
-
-
-/* For mobile screens */
 @media (max-width: 768px) {
   .content {
     flex-direction: column; /* Stack content vertically */

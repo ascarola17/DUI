@@ -202,19 +202,19 @@ const ReportFeature = () => {
   );
 };
 
-// Inline styles for simplicity
 const recordingStyle = {
   color: '#black',
   position: 'fixed',
-  bottom: '80px',
-  right: '20px',
+  bottom: '150px', // Adjusted to move it above the button
+  right: '20px', // Keep it aligned to the right
   padding: '10px 20px',
   backgroundColor: '#dc3545',
   color: '#fff',
   borderRadius: '5px',
   boxShadow: '0 2px 4px rgba(0,0,0,0.3)',
-  zIndex: 1000,
+  zIndex: 2000, // Ensure it's behind the button but above most other elements
 };
+
 
 const reportsContainerStyle = {
   position: 'absolute',

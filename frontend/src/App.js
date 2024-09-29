@@ -1,6 +1,4 @@
-// src/App.js
-
-import './App.css';
+import coordinates from './coordinates.json'; 
 import React, { useState, useEffect } from 'react';
 import './App.css';
 import { GoogleMap, LoadScript, DirectionsRenderer } from '@react-google-maps/api';
@@ -13,7 +11,7 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const containerStyle = {
   width: '100%',
-  height: '400px'
+  height: '100%'
 };
 
 // Set the default center of the map (El Paso coordinates)
@@ -22,13 +20,6 @@ const defaultCenter = {
   lng: -106.4850, // El Paso longitude
 };
 
-// Example high-risk zones (replace with actual data)
-const highRiskZones = [
-  { lat: 31.7641, lng: -106.4900 },  // Example of a high-risk area
-  { lat: 31.7622, lng: -106.4875 },  // Another example of a high-risk area
-];
-
-
 function App() {
   // State for controlling dropdown and notification dot
   const [showReportList, setShowReportList] = useState(false); // Define state for showing report list
@@ -36,13 +27,15 @@ function App() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [userLocation, setUserLocation] = useState(null);  // State to store user's location
   const [directions, setDirections] = useState(null);  // State to store the directions result
+  const [highRiskZones, setHighRiskZones] = useState([]);  // State for high-risk zones
 
-
-  const toggleReports = () => {
-    setShowReportList(!showReportList);
-    setHasNewReport(false); // Turn off the red dot when the logo is clicked
+  // Toggle dropdown menu visibility
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+    setHasIssues(false);
   };
 
+  // Function to get user's current location
   const getCurrentLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -60,6 +53,21 @@ function App() {
     } else {
     }
   };
+
+  // UseEffect to load high-risk zones from coordinates.json
+  useEffect(() => {
+    // Convert the array of coordinates to lat/lng objects
+    const convertCoordinates = (array) => array.map(([lat, lng]) => ({ lat, lng }));
+
+    // Combine the high-risk zones from El Paso, Las Vegas, and Phoenix
+    const combinedHighRiskZones = [
+      ...convertCoordinates(coordinates.elPasoCoordinates),
+      ...convertCoordinates(coordinates.lasVegasCoordinates),
+      ...convertCoordinates(coordinates.phoenixCoordinates)
+    ];
+
+    setHighRiskZones(combinedHighRiskZones); // Set the high-risk zones
+  }, []);
 
   // Get user's location when the component mounts
   useEffect(() => {
@@ -85,7 +93,6 @@ function App() {
       <div className="content">
         {/* Report Section */}
         <div className="report">
-          <h2>Report an Incident</h2>
           <ReportFeature /> {/* Integrate ReportFeature component */}
         </div>
 
@@ -96,6 +103,7 @@ function App() {
             userLocation={userLocation} 
             setDirections={setDirections} 
             highRiskZones={highRiskZones}  // Pass the high-risk zones to RouteComponent
+            toast={toast} 
           />
         </div>
           <ReportFeature />  {/* Integrate ReportFeature component */}
@@ -147,5 +155,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

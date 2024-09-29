@@ -1,32 +1,64 @@
 // src/components/HeatMap.js
 import React, { useEffect, useState } from 'react';
 import { HeatmapLayer } from '@react-google-maps/api';
-import { collection, onSnapshot } from 'firebase/firestore';
-import { db } from '../firebase';
+import coordinates from '../coordinates.json'; // Adjust the path as necessary
 
 const HeatMap = () => {
   const [heatmapData, setHeatmapData] = useState([]);
 
   useEffect(() => {
-    if (!window.google) return;
+    if (!window.google) {
+      console.error('Google Maps API is not loaded');
+      return;
+    }
 
-    const reportsCollection = collection(db, 'drunkDrivingIncidents');
+    // Transform the coordinates data into an array of points
+    let data = [];
 
-    const unsubscribe = onSnapshot(reportsCollection, (snapshot) => {
-      const data = snapshot.docs.map((doc) => doc.data());
-      const locations = data
-        .filter((report) => report.latitude && report.longitude)
-        .map((report) => {
-          return {
-            location: new window.google.maps.LatLng(report.latitude, report.longitude),
-            weight: report.severity || 1,
-          };
+    Object.keys(coordinates).forEach((cityKey) => {
+      const cityCoordinates = coordinates[cityKey]; // Array of coordinate pairs
+
+      cityCoordinates.forEach((coordinatePair) => {
+        coordinatePair.forEach((point) => {
+          // Each point is [latitude, longitude]
+          const [latitude, longitude] = point;
+          data.push({
+            latitude,
+            longitude,
+            weight: 1, // You can adjust the weight as needed
+          });
         });
-      setHeatmapData(locations);
+      });
     });
 
-    return () => unsubscribe();
+    // Now `data` is an array of points with latitude and longitude
+    console.log('Transformed data for heatmap:', data);
+
+    const locations = data
+      .filter((point) => point.latitude && point.longitude)
+      .map((point) => {
+        const location = new window.google.maps.LatLng(point.latitude, point.longitude);
+        return {
+          location,
+          weight: point.weight || 1,
+        };
+      });
+
+    setHeatmapData(locations);
   }, []);
+
+  // Custom gradient for high-risk zones
+  const gradient = [
+    'rgba(0, 255, 255, 0)',
+    'rgba(0, 255, 255, 1)',
+    'rgba(0, 191, 255, 1)',
+    'rgba(0, 127, 255, 1)',
+    'rgba(0, 63, 255, 1)',
+    'rgba(0, 0, 255, 1)',
+    'rgba(255, 0, 255, 1)',
+    'rgba(255, 0, 127, 1)',
+    'rgba(255, 0, 0, 1)',
+  ];
 
   return (
     <>
@@ -34,8 +66,9 @@ const HeatMap = () => {
         <HeatmapLayer
           data={heatmapData}
           options={{
-            radius: 20,
-            opacity: 0.6,
+            radius: 30,
+            opacity: 0.8,
+            gradient: gradient,
           }}
         />
       )}
