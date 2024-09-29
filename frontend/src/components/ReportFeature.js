@@ -198,6 +198,7 @@ const ReportFeature = () => {
   );
 };
 
+// Inline styles for simplicity
 const recordingStyle = {
   position: 'fixed',
   bottom: '150px', // Adjusted to move it above the button
@@ -210,18 +211,18 @@ const recordingStyle = {
   zIndex: 2000, // Ensure it's behind the button but above most other elements
 };
 
-
 const reportsContainerStyle = {
-  position: 'absolute',
-  top: '80px',
-  right: '60px', 
-  width: '300px', // Fixed width for the report
+  position: 'fixed', // Use fixed positioning to ensure it's always in the same place
+  bottom: '20px', // Position it 20px from the bottom
+  left: '20px', // Position it 20px from the left
+  width: '300px', // Fixed width for the report container
   maxHeight: '70vh', // Adjust the max-height to 70% of the viewport height
-  backgroundColor: 'rgba(255, 255, 255, 0.95)', // Semi-transparent background to match .report
+  backgroundColor: 'rgba(255, 255, 255, 0.95)', // Semi-transparent background
   padding: '20px', // Padding for content inside the report
-  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)', // Match the shadow for visual effect
+  boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.2)', // Add shadow for visual effect
   borderRadius: '8px', // Rounded corners
-  zIndex: 4, // Ensure it's on top of other elements like the map
+  zIndex: 3000, // Ensure it's on top of other elements, including the map
+  overflowY: 'auto', // Add scrolling if content exceeds the max height
 };
 
 const reportsListStyle = {

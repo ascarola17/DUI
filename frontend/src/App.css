@@ -48,72 +48,75 @@ header {
   height: 100%;
 }
 
-/* Ensure the form does not interfere with the map's size */
+/* Container to center the form and keep it on top */
+.form-container {
+  position: fixed;
+  left: 18%;
+  top: 12%;
+  transform: translate(-50%, -50%);
+  width: 100%;      
+  max-width: 350px; /* Slightly smaller max-width */
+  padding: 16px;    /* Reduced padding */
+  background-color: #f9f9f9;
+  border-radius: 10px; /* Smaller rounded corners */
+  box-shadow: 0px 6px 15px rgba(0, 0, 0, 0.1);
+  z-index: 1000;  
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* Form styling */
 form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;  /* Reduced spacing between elements */
   width: 100%;
-  max-width: 400px;
-  z-index: 1; /* Keep the form above the map */
-  padding: 10px;
 }
 
-/* Logo container */
-.logo-container {
-  top: 250px;
-  right: 10px;
-  position: absolute;
-  cursor: pointer;
-  display: inline-block;
-  z-index: 4;
+/* Input styling */
+input[type="text"] {
+  padding: 8px;       /* Smaller padding */
+  font-size: 14px;    /* Smaller font size */
+  border: 1px solid #ddd;
+  border-radius: 4px; /* Smaller rounded corners */
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.logo {
-  width: 40px;  /* Make the logo smaller */
-  height: 40px;  /* Keep it a square to ensure it's circular */
-  border-radius: 50%;  /* This makes the image circular */
-  object-fit: cover;  /* Ensures the image scales properly within the circle */
+input[type="text"]:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 6px rgba(0, 123, 255, 0.25); /* Smaller glow */
+  outline: none;
 }
 
-/* Notification dot */
-.notification-dot {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  width: 12px;
-  height: 12px;
-  background-color: red;
-  border-radius: 50%;
-  border: 2px solid white;
-}
-
-.dropdown-menu {
-  position: absolute;
-  top: 50px;  /* Distance below the logo */
-  left: 0;
-  background-color: white;
-  width: 300px; /* Fixed width for the report */
-  height: 70%;  /* Fixed height to control overflow */
-  overflow-y: scroll;  /* Add vertical scrolling if content exceeds height */
-  border: 1px solid #ccc;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  z-index: 1000;
-  padding: 10px;
-  width: 150px;
-  text-align: left;
-}
-
+/* Button styling */
 button {
-  /* Reset button styles for consistency */
-  font-family: inherit;
+  padding: 8px;       /* Smaller padding */
+  font-size: 14px;    /* Smaller font size */
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 4px; /* Smaller rounded corners */
+  cursor: pointer;
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.2s ease;
 }
+
+button:hover {
+  background-color: #0056b3;
+  transform: translateY(-1px); /* Smaller lift effect */
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.15);
+}
+
+button:active {
+  transform: translateY(0);
+  box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+}
+
+
 
 @media (max-width: 768px) {
   .content {
     flex-direction: column;
-  }
-
-  .map {
-    height: 90%; /* Map takes full height of content */
-    width: 100%;  /* Full width for the map */
   }
 }
 

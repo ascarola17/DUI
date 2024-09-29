@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import coordinates from '../coordinates.json'; // Adjust the path as necessary
 
-const RouteComponent = ({ userLocation, setDirections, toast }) => {
+const RouteComponent = ({ userLocation, setDirections }) => {
   const [origin, setOrigin] = useState(
     userLocation ? `${userLocation.lat},${userLocation.lng}` : ''
   );
@@ -133,7 +133,7 @@ const RouteComponent = ({ userLocation, setDirections, toast }) => {
   };
 
   return (
-    <div>
+    <div className="form-container">
       <form onSubmit={handleSubmit}>
         <input
           type="text"
@@ -149,10 +149,10 @@ const RouteComponent = ({ userLocation, setDirections, toast }) => {
         />
         <button type="submit">Submit</button>
       </form>
-
+  
       {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
-  );
+  );  
 };
 
 export default RouteComponent;

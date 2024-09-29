@@ -8,7 +8,6 @@ import RouteComponent from './components/RouteComponent'; // Route component
 import DataUploader from './components/DataUploader'; // Data uploader component
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-// import Logo from './Logo.webp'; // Make sure the path is correct
 
 // Define your map container style
 const containerStyle = {
@@ -23,9 +22,8 @@ const defaultCenter = {
 };
 
 function App() {
-  // State for controlling dropdown and notification dot
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [hasIssues, setHasIssues] = useState(true);  // Example: Assume there's an issue
+  const [hasIssues, setHasIssues] = useState(true);
   const [userLocation, setUserLocation] = useState(null);  // State to store user's location
   const [directions, setDirections] = useState(null);  // State to store the directions result
   const [highRiskZones, setHighRiskZones] = useState([]);  // State for high-risk zones
@@ -52,15 +50,15 @@ function App() {
         }
       );
     } else {
+      toast.error('Geolocation is not supported by your browser.');
     }
   };
 
-  // UseEffect to load high-risk zones from coordinates.json
+  // Load high-risk zones from coordinates.json
   useEffect(() => {
-    // Convert the array of coordinates to lat/lng objects
     const convertCoordinates = (array) => array.map(([lat, lng]) => ({ lat, lng }));
-
-    // Combine the high-risk zones from El Paso, Las Vegas, and Phoenix
+    
+    // Combine the high-risk zones from different cities
     const combinedHighRiskZones = [
       ...convertCoordinates(coordinates.elPasoCoordinates),
       ...convertCoordinates(coordinates.lasVegasCoordinates),
@@ -72,7 +70,7 @@ function App() {
 
   // Get user's location when the component mounts
   useEffect(() => {
-    getCurrentLocation();  // Call the function to get user's location
+    getCurrentLocation(); // Call the function to get user's location
   }, []);
 
   return (
@@ -81,72 +79,49 @@ function App() {
         <h1>DUI Risk Heatmap</h1>
       </header>
 
-      {/* Logo with a notification dot (conditionally rendered based on hasIssues) */}
-      <div className="logo-container" onClick={toggleDropdown}>
-        <img src="logo.jpg" alt="Description of image" className="logo" />
-        {hasIssues && <span className="notification-dot"></span>} {/* Use the hasIssues state here */}
-      </div>
-
       <div className="content">
-        {/* Report Section */}
         <div className="report">
           <ReportFeature /> {/* Integrate ReportFeature component */}
         </div>
 
         {/* Inputs for Route Calculation */}
         <div className="route-section">
-          {/* Pass setDirections to RouteComponent for handling directions */}
           <RouteComponent 
             userLocation={userLocation} 
             setDirections={setDirections} 
             highRiskZones={highRiskZones}  // Pass the high-risk zones to RouteComponent
-            toast={toast} 
           />
         </div>
-          <ReportFeature />  {/* Integrate ReportFeature component */}
 
         {/* Map Section */}
         <div className="map">
           <LoadScript
             googleMapsApiKey={process.env.REACT_APP_GOOGLE_MAPS_API_KEY}
-            libraries={['visualization','places']} // Include 'visualization' library for HeatMap
+            libraries={['visualization', 'places']} // Include 'visualization' library for HeatMap
           >
             <GoogleMap
               mapContainerStyle={containerStyle}  // Map container style
-              center={userLocation ? userLocation : defaultCenter}  // Center the map on user location if available
+              center={userLocation || defaultCenter}  // Center the map on user location if available
               zoom={userLocation ? 14 : 9}  // Adjust zoom based on whether user location is available
             >
               {directions && (
-          <>
-              {console.log("Rendering Directions:", directions)}  // Add this to debug
-            <DirectionsRenderer directions={directions} />
-            </>
-            )}
+                <>
+                  {console.log("Rendering Directions:", directions)}  // Add this to debug
+                  <DirectionsRenderer directions={directions} />
+                </>
+              )}
 
               {/* HeatMap Component */}
               <HeatMap />
-
-              {/* Route Component */}
-              <RouteComponent
-                userLocation={userLocation}
-                mapCenter={userLocation || defaultCenter}
-              />
             </GoogleMap>
           </LoadScript>
         </div>
       </div>
-
-      {/* DataUploader Component */}
-      {/* 
-        Uncomment the line below to upload data to Firestore.
-        Ensure that you only upload data once to prevent duplicates.
-        After uploading, it's recommended to remove or comment out this component.
-      */}
-     {/*<DataUploader />*/}
 
       {/* Toast Notifications */}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
   );
 }
+
 export default App;
