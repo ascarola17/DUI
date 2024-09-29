@@ -118,6 +118,14 @@ function App() {
         </div>
       </div>
 
+      {/* DataUploader Component */}
+      {/* 
+        Uncomment the line below to upload data to Firestore.
+        Ensure that you only upload data once to prevent duplicates.
+        After uploading, it's recommended to remove or comment out this component.
+      */}
+     {/*<DataUploader />*/}
+
       {/* Toast Notifications */}
       <ToastContainer position="top-right" autoClose={3000} hideProgressBar />
     </div>
