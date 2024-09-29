@@ -1,60 +1,98 @@
-// src/components/RouteComponent.js
+
 import React, { useState } from 'react';
-import { DirectionsService, DirectionsRenderer } from '@react-google-maps/api';
 
-const RouteComponent = ({ userLocation, mapCenter }) => {
-  const [directions, setDirections] = useState(null);
+const RouteComponent = ({ userLocation, setDirections, highRiskZones }) => {
+  const [origin, setOrigin] = useState(userLocation ? `${userLocation.lat},${userLocation.lng}` : '');
   const [destination, setDestination] = useState('');
-  const [routeRequested, setRouteRequested] = useState(false);
+  const [error, setError] = useState(null);
+  const [directionsResult, setDirectionsResult] = useState(null); // Store the entire DirectionsResult
+  const [showOptions, setShowOptions] = useState(false);
 
-  // Handle form submission for getting the route
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    setRouteRequested(true);  // Indicate that route has been requested
+  const isRouteSafe = (route, heatZones) => {
+    // Implement your safety logic here
+    return true; // Placeholder
   };
 
-  // Handle destination input change
-  const handleChange = (e) => {
-    setDestination(e.target.value);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    if (!origin || !destination) {
+      alert("Please enter both origin and destination.");
+      return;
+    }
+
+    const DirectionsServiceOptions = {
+      origin: origin,
+      destination: destination,
+      travelMode: 'DRIVING',
+      provideRouteAlternatives: true,
+    };
+
+    const directionsService = new window.google.maps.DirectionsService();
+    directionsService.route(DirectionsServiceOptions, (result, status) => {
+      if (status === window.google.maps.DirectionsStatus.OK) {
+        console.log("Received directions:", result);
+
+        setDirectionsResult(result); // Store the entire DirectionsResult
+        setShowOptions(true);
+      } else {
+        console.error('Directions request failed:', result);
+        setError('Failed to get directions.');
+      }
+    });
+  };
+
+  const chooseFastestRoute = () => {
+    const fastestRouteIndex = 0; // Assuming the first route is the fastest
+    const newDirectionsResult = {
+      ...directionsResult,
+      routes: [directionsResult.routes[fastestRouteIndex]],
+    };
+    setDirections(newDirectionsResult);
+    setShowOptions(false);
+  };
+
+  const chooseSafestRoute = () => {
+    const safeRoutes = directionsResult.routes.filter((route) => isRouteSafe(route, highRiskZones));
+    if (safeRoutes.length > 0) {
+      const newDirectionsResult = {
+        ...directionsResult,
+        routes: [safeRoutes[0]], // Take the first safe route
+      };
+      setDirections(newDirectionsResult);
+    } else {
+      alert("No safe routes available, defaulting to fastest route.");
+      chooseFastestRoute(); // Fall back to the fastest route
+    }
+    setShowOptions(false);
   };
 
   return (
     <div>
-      {/* Form to input the destination */}
       <form onSubmit={handleSubmit}>
-        <input 
-          type="text" 
-          placeholder="Enter destination" 
-          value={destination}
-          onChange={handleChange}
+        <input
+          type="text"
+          placeholder="Enter current location"
+          value={origin}
+          onChange={(e) => setOrigin(e.target.value)}
         />
-        <button type="submit">Get Route</button>
+        <input
+          type="text"
+          placeholder="Enter destination"
+          value={destination}
+          onChange={(e) => setDestination(e.target.value)}
+        />
+        <button type="submit">Submit</button>
       </form>
 
-      {/* DirectionsService to request the route */}
-      {routeRequested && userLocation && (
-        <DirectionsService
-          options={{
-            destination: destination,
-            origin: userLocation,
-            travelMode: 'DRIVING',  // You can change to 'WALKING', 'BICYCLING', etc.
-          }}
-          callback={(response) => {
-            if (response !== null && response.status === 'OK') {
-              setDirections(response);  // Set directions to render the route
-            } else {
-              console.log('Directions request failed');
-            }
-          }}
-        />
+      {showOptions && (
+        <div>
+          <button onClick={chooseFastestRoute}>Take Fastest Route</button>
+          <button onClick={chooseSafestRoute}>Take Safest Route</button>
+        </div>
       )}
 
-      {/* DirectionsRenderer to render the route on the map */}
-      {directions && (
-        <DirectionsRenderer
-          directions={directions}
-        />
-      )}
+      {error && <p style={{ color: 'red' }}>{error}</p>}
     </div>
   );
 };
