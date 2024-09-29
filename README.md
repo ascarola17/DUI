@@ -44,12 +44,12 @@ To set up this project locally, follow these steps:
 
    ```makefile
      REACT_APP_GOOGLE_MAPS_API_KEY = your_google_maps_api_key
+   
 3. In your first terminal you will CD into the backend and run the command to start the backend
 
    ```bash
      cd backend
      npm node server.js
-
    
 4. Then you will make a second terminal and CD into the frontend and start the development server with the command:
 
