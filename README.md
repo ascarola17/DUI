@@ -25,7 +25,7 @@ DUI Risk Heatmap is a web application designed to visualize DUI risk areas using
  https://github.com/ascarola17/DUI.git
 ```
 
-## Frontend Dependencies
+## Dependencies
 Make sure Node.js and npm are installed. You can download and install them from [nodejs.org](https://nodejs.org/).
 
 To set up this project locally, follow these steps:
@@ -38,15 +38,26 @@ To set up this project locally, follow these steps:
 
    ```bash
      npm install
+     npm install axios
+     npm install express cors multer axios
+     npm install react-toastify
+     npm install firebase
+     npm install @react-google-maps/api
 
 3. Create your .env file in the root of the project and add you Google API key:
 
    ```makefile
      REACT_APP_GOOGLE_MAPS_API_KEY = your_google_maps_api_key
-   
-4. Start the development server:
+4. In your first terminal you will CD into the backend and run the command to start the backend
 
    ```bash
+     cd backend
+     npm node server.js
+   
+4. Then you will make a second terminal and CD into the frontend and start the development server with the command:
+
+   ```bash
+     cd frontend
      npm start
 
 ### Google Maps & Cloud Speech-to-Text API Help
