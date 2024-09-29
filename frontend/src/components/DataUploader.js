@@ -8,7 +8,7 @@ const DataUploader = () => {
   // Function to upload incidents to Firebase
   const uploadDataToFirebase = async () => {
     // Define coordinate pairs for El Paso (start and end points)
-    const elPasoCoordinates = [
+   const elPasoCoordinates = [
       [[31.7758889, -106.5021667], [31.7756111, -106.5019444]],
       [[31.7760000, -106.5022000], [31.7765000, -106.5023000]],
       [[31.7686944, -106.4894722], [31.7672222, -106.4918611]],
@@ -20,7 +20,7 @@ const DataUploader = () => {
     ];
 
     // Define coordinate pairs for Las Vegas (start and end points)
-    const lasVegasCoordinates = [
+     const lasVegasCoordinates = [
       [[36.218515, -115.327302], [36.218515, -115.063721]],
       [[36.255032, -115.247298], [36.180479, -115.177836]],
       [[36.254032, -115.247298], [36.177976, -115.245437]],
