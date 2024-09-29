@@ -41,7 +41,7 @@ const buttonStyle = {
   borderRadius: '50px',
   cursor: 'pointer',
   boxShadow: '0 4px 6px rgba(0, 0, 0, 0.3)',
-  zIndex: 1000, // Ensures the button stays on top of other elements
+  zIndex: 3000, // Ensures the button stays on top of other elements
   transition: 'background-color 0.3s ease',
 };
 

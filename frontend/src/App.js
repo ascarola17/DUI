@@ -13,7 +13,7 @@ import 'react-toastify/dist/ReactToastify.css';
 // Define your map container style
 const containerStyle = {
   width: '100%',
-  height: '400px'
+  height: '100%'
 };
 
 // Set the default center of the map (El Paso coordinates)
@@ -90,7 +90,6 @@ function App() {
       <div className="content">
         {/* Report Section */}
         <div className="report">
-          <h2>Report an Incident</h2>
           <ReportFeature /> {/* Integrate ReportFeature component */}
         </div>
 
